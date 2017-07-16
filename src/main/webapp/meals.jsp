@@ -14,22 +14,11 @@
         <td><b>Date</b></td>
     </tr>
     <c:forEach items="${meals}" var="meal">
-        <c:choose>
-            <c:when test="${meal.exceed}">
-                <tr style="color: red">
-                    <td>${meal.description}</td>
-                    <td>${meal.calories}</td>
-                    <td>${meal.dateTime.format(formatter)}</td>
-                </tr>
-            </c:when>
-            <c:otherwise>
-                <tr style="color: forestgreen">
-                    <td>${meal.description}</td>
-                    <td>${meal.calories}</td>
-                    <td>${meal.dateTime.format(formatter)}</td>
-                </tr>
-            </c:otherwise>
-        </c:choose>
+        <tr ${meal.exceed ? 'style="color: red"' : 'style="color: forestgreen"'}>
+            <td>${meal.description}</td>
+            <td>${meal.calories}</td>
+            <td>${meal.dateTime.format(formatter)}</td>
+        </tr>
     </c:forEach>
 </table>
 </body>

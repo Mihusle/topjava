@@ -51,11 +51,7 @@ public class MealsUtil {
         return new MealWithExceed(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
     }
     
-    public static List<MealWithExceed> convertWithExceed(List<Meal> meals, int caloriesPerDay) {
-        Map<LocalDate, Integer> caloriesByDate = meals.stream()
-                .collect(Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories)));
-        return meals.stream()
-                .map(meal -> createWithExceed(meal, caloriesByDate.get(meal.getDate()) > caloriesPerDay))
-                .collect(Collectors.toList());
+    public static List<MealWithExceed> getFilteredWithExceed(List<Meal> meals, int caloriesPerDay) {
+        return getFilteredWithExceeded(meals, LocalTime.MIN, LocalTime.MAX, caloriesPerDay);
     }
 }

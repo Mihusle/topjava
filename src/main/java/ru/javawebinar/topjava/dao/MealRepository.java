@@ -2,17 +2,15 @@ package ru.javawebinar.topjava.dao;
 
 import ru.javawebinar.topjava.model.Meal;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Created by MHSL on 16.07.2017.
  */
-public interface MealDAO {
+public interface MealRepository {
     
-    void add(Meal meal);
+    Meal save(Meal meal);
     Meal get(int id);
-    List<Meal> getAll();
-    void update(int id, Meal newMeal);
+    Collection<Meal> getAll();
     void delete(int id);
-    boolean isExist(int id);
 }

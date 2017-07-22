@@ -1,22 +1,19 @@
 package ru.javawebinar.topjava.util;
 
-import ru.javawebinar.topjava.dao.MealDAO;
-import ru.javawebinar.topjava.dao.MemoryMealDAO;
+import ru.javawebinar.topjava.dao.MealRepository;
+import ru.javawebinar.topjava.dao.MemoryMealRepository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealWithExceed;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MealsUtil {
     
     public static final int CALORIES_PER_DAY = 2000;
-    private static final MealDAO DAO = new MemoryMealDAO();
+    private static final MealRepository DAO = new MemoryMealRepository();
     
     public static void main(String[] args) {
         List<MealWithExceed> mealsWithExceeded = getFilteredWithExceeded(DAO.getAll(), LocalTime.of(7, 0), LocalTime.of(12, 0), CALORIES_PER_DAY);
@@ -25,7 +22,7 @@ public class MealsUtil {
         System.out.println(getFilteredWithExceededByCycle(DAO.getAll(), LocalTime.of(7, 0), LocalTime.of(12, 0), CALORIES_PER_DAY));
     }
 
-    public static List<MealWithExceed> getFilteredWithExceeded(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+    public static List<MealWithExceed> getFilteredWithExceeded(Collection<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories)));
         return meals.stream()
@@ -34,7 +31,7 @@ public class MealsUtil {
                 .collect(Collectors.toList());
     }
 
-    public static List<MealWithExceed> getFilteredWithExceededByCycle(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+    public static List<MealWithExceed> getFilteredWithExceededByCycle(Collection<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         final Map<LocalDate, Integer> caloriesSumByDate = new HashMap<>();
         meals.forEach(meal -> caloriesSumByDate.merge(meal.getDate(), meal.getCalories(), Integer::sum));
         
@@ -51,7 +48,7 @@ public class MealsUtil {
         return new MealWithExceed(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
     }
     
-    public static List<MealWithExceed> getFilteredWithExceed(List<Meal> meals, int caloriesPerDay) {
+    public static List<MealWithExceed> getFilteredWithExceed(Collection<Meal> meals, int caloriesPerDay) {
         return getFilteredWithExceeded(meals, LocalTime.MIN, LocalTime.MAX, caloriesPerDay);
     }
 }

@@ -7,8 +7,9 @@
     <meta charset="UTF-8">
 </head>
 <body>
+    <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <form method="post" action="meals" name="formAddMeal">
-        ID: <input type="text" readonly="readonly" name="id" value="<c:out value="${meal.id}"/>"><br/>
+        ID: <input type="hidden" name="id" value="<c:out value="${meal.id}"/>"><br/>
         Description: <input type="text" name="description" value="<c:out value="${meal.description}"/>"><br/>
         Calories: <input type="text" name="calories" value="<c:out value="${meal.calories}"/>"><br/>
         Date: <input type="text" name="dateTime" value="${meal.dateTime.format(formatter)}"/> <br/>
